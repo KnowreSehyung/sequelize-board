@@ -8,6 +8,10 @@ class BoardService {
   findAll() {
     return this.board.findAll();
   }
+
+  create(data) {
+    return this.board.create(data);
+  }
 }
 
 module.exports = BoardService;

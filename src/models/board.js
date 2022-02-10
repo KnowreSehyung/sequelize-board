@@ -13,9 +13,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Board.init(
     {
-      title: DataTypes.STRING,
-      content: DataTypes.STRING,
-      author: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      author: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,

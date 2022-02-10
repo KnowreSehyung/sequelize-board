@@ -1,14 +1,16 @@
 const express = require("express");
 const logger = require("morgan");
 const { Router } = require("express");
+const errorMiddleware = require("./middlewares/error.middleware");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ?? 3000;
 
 class App {
   constructor(controllers) {
     this.app = express();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.initializeErrorMiddlewares();
   }
 
   listen() {
@@ -22,7 +24,16 @@ class App {
   }
 
   initializeMiddlewares() {
+    // parser
+    this.app.use(express.json());
+
+    // logger
     this.app.use(logger("dev"));
+  }
+
+  initializeErrorMiddlewares() {
+    // error middleware
+    this.app.use(errorMiddleware);
   }
 
   initializeControllers(controllers) {
