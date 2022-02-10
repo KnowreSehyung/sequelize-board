@@ -1,25 +1,40 @@
 const express = require("express");
-const db = require("./models");
 const logger = require("morgan");
+const { Router } = require("express");
 
 const PORT = process.env.PORT || 3000;
-const app = express();
 
-db.sequelize
-  .sync()
-  .then(() => {
-    console.log("db connected");
-  })
-  .catch((e) => {
-    console.log(`db connecting error ${e}`);
-  });
+class App {
+  constructor(controllers) {
+    this.app = express();
+    this.initializeMiddlewares();
+    this.initializeControllers(controllers);
+  }
 
-// loger
-app.use(logger("dev"));
+  listen() {
+    this.app.listen(PORT, () => {
+      console.log(`listening on ${PORT}`);
+    });
+  }
 
-// router
-app.use("/", require("./routes"));
+  getServer() {
+    return this.app;
+  }
 
-app.listen(PORT, () => {
-  console.log(`listening on ${PORT}`);
-});
+  initializeMiddlewares() {
+    this.app.use(logger("dev"));
+  }
+
+  initializeControllers(controllers) {
+    const router = Router();
+    router.get("/", (req, res) => res.send("pong"));
+
+    controllers.forEach((con) => {
+      router.use(con.router);
+    });
+
+    this.app.use("/api", router);
+  }
+}
+
+module.exports = App;

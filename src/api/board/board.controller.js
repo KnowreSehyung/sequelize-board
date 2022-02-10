@@ -1,10 +1,27 @@
-const boradService = require("./board.service");
+const { Router } = require("express");
+const resWarpper = require("../../lib/request.handler");
+const BoardService = require("./board.service");
 
-exports.get = async (req, res, next) => {
-  try {
-    const data = await boradService.findAll();
-    res.json(data);
-  } catch (e) {
-    next(e);
+class BoardController {
+  path = "/boards";
+  router = Router();
+
+  boardService = new BoardService();
+
+  constructor() {
+    this.initializeRoutes();
   }
-};
+
+  initializeRoutes() {
+    const router = Router();
+    router.get("/", resWarpper(this.getAll.bind(this)));
+
+    this.router.use(this.path, router);
+  }
+
+  async getAll() {
+    return await this.boardService.findAll();
+  }
+}
+
+module.exports = BoardController;

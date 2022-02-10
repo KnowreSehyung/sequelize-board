@@ -1,9 +1,13 @@
 const db = require("../../models");
 
-exports.findAll = async () => {
-  try {
-    return await db.Board.findAll();
-  } catch (error) {
-    return { error };
+class BoardService {
+  constructor() {
+    this.board = db.Board;
   }
-};
+
+  findAll() {
+    return this.board.findAll();
+  }
+}
+
+module.exports = BoardService;
