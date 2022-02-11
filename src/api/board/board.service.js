@@ -5,8 +5,13 @@ class BoardService {
     this.board = db.Board;
   }
 
-  findAll() {
-    return this.board.findAll();
+  get(page = 1) {
+    const offset = page > 1 ? 10 * (page - 1) : 0;
+    return this.board.findAll({
+      offset,
+      limit: 10,
+      order: [["id", "DESC"]],
+    });
   }
 
   create(data) {

@@ -15,14 +15,15 @@ class BoardController {
 
   initializeRoutes() {
     const router = Router();
-    router.get("/", resWarpper(this.getAll.bind(this)));
+    router.get("/", resWarpper(this.get.bind(this)));
     router.post("/post", resWarpper(this.create.bind(this)));
 
     this.router.use(this.path, router);
   }
 
-  async getAll(req, res) {
-    return await this.boardService.findAll();
+  async get(req, res) {
+    const page = req.query.page;
+    return await this.boardService.get(page);
   }
 
   async create(req, res) {
