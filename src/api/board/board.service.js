@@ -6,10 +6,11 @@ class BoardService {
   }
 
   get(page = 1) {
-    const offset = page > 1 ? 10 * (page - 1) : 0;
+    const limit = 10;
+    const offset = 0 + (page - 1) * limit;
     return this.board.findAll({
       offset,
-      limit: 10,
+      limit,
       order: [["id", "DESC"]],
     });
   }
